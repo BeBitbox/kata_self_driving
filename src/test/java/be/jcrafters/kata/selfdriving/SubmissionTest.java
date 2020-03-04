@@ -60,6 +60,17 @@ class SubmissionTest {
         assertThat(score).isEqualTo(1);
     }
 
+    @Test
+    void getScore_twoRides() {
+        FulfilledRide ride1 = createRide(0, 0, 1, 0, false);
+        FulfilledRide ride2 = createRide(0, 0, 1, 0, false);
+        List<Set<FulfilledRide>> assignments = List.of(Set.of(ride1, ride2));
+
+        long score = new Submission(assignments).getScore(10);
+
+        assertThat(score).isEqualTo(2);
+    }
+
     private FulfilledRide createRide(int a, int b, int x, int y, boolean punctual) {
         return new FulfilledRide(aRide()
                 .withStart(Coordinate.of(a, b))

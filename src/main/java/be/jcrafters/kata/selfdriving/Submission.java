@@ -15,8 +15,7 @@ public class Submission {
         return rideAssignments.stream()
                 .flatMap(Collection::stream)
                 .mapToLong(fulfilledRide -> fulfilledRide.getScore(i))
-                .max()
-                .orElse(0);
+                .sum();
     }
 
 }

@@ -17,8 +17,8 @@ public class FulfilledRide {
         return punctual;
     }
 
-    long getScore(int i) {
-        int bonus = isPunctual() ? i : 0;
-        return getRide().getDistance() + bonus;
+    long getScore(int bonusValue) {
+        int bonus = isPunctual() ? bonusValue : 0;
+        return ride.getDistance() + bonus;
     }
 }
