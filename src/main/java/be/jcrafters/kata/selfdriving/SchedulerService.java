@@ -11,9 +11,14 @@ public class SchedulerService {
 
     public Submission calculateSubmission(Planning planning) {
         Set<FulfilledRide> fulfilledRides = planning.getRides().stream()
+                .filter(ride -> hasEnoughSteps(ride))
                 .map(ride -> new FulfilledRide(ride, canBePunctual(ride)))
                 .collect(Collectors.toSet());
         return new Submission(List.of(fulfilledRides));
+    }
+
+    private boolean hasEnoughSteps(Ride ride) {
+        return ride.getLatestFinish() >= ride.getDistance();
     }
 
     boolean canBePunctual(Ride ride) {
