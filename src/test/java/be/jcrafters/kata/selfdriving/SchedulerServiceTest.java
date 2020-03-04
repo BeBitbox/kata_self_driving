@@ -37,4 +37,15 @@ class SchedulerServiceTest {
         assertThat(submission.rideAssignments).hasSize(1);
         assertThat(submission.rideAssignments.get(0)).isEmpty();
     }
+
+    @Test
+    void calculateSubmission_shiftedPunctual() {
+        var planning = new Planning("horizontal_city_shifted_punctual");
+
+        Submission submission = new SchedulerService().calculateSubmission(planning);
+
+        assertThat(submission.rideAssignments).hasSize(1);
+        assertThat(submission.rideAssignments.get(0)).hasSize(1);
+        assertThat(submission.rideAssignments.get(0)).containsExactly(new FulfilledRide(Ride.RideBuilder.aRide().withId(0).build(), true));
+    }
 }

@@ -11,7 +11,7 @@ public class SchedulerService {
 
     public Submission calculateSubmission(Planning planning) {
         Set<FulfilledRide> fulfilledRides = planning.getRides().stream()
-                .filter(ride -> hasEnoughSteps(ride))
+                .filter(this::hasEnoughSteps)
                 .map(ride -> new FulfilledRide(ride, canBePunctual(ride)))
                 .collect(Collectors.toSet());
         return new Submission(List.of(fulfilledRides));
@@ -22,6 +22,6 @@ public class SchedulerService {
     }
 
     boolean canBePunctual(Ride ride) {
-        return ride.getStart().getX() == 0 && ride.getStart().getY() == 0 ;
+        return ride.getStart().getX() + ride.getStart().getY() <= ride.getEarliestStart();
     }
 }
