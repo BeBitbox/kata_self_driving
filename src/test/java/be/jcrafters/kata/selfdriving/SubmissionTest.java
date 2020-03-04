@@ -10,6 +10,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class SubmissionTest {
 
+    int ridesAdded = 0;
+
     @Test
     void getScore_oneRide_oneBlock() {
         FulfilledRide ride = createRide(0, 0, 1, 0, true);
@@ -86,6 +88,7 @@ class SubmissionTest {
 
     private FulfilledRide createRide(int a, int b, int x, int y, boolean punctual) {
         return new FulfilledRide(aRide()
+                .withId(ridesAdded++)
                 .withStart(Coordinate.of(a, b))
                 .withEnd(Coordinate.of(x, y))
                 .withEarliestStart(0)

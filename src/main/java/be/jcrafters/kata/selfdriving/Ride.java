@@ -1,11 +1,14 @@
 package be.jcrafters.kata.selfdriving;
 
+import java.util.Objects;
+
 public class Ride {
 
     private Coordinate start;
     private Coordinate end;
     private int earliestStart;
     private int latestFinish;
+    private int id;
 
     public Coordinate getStart() {
         return start;
@@ -32,6 +35,7 @@ public class Ride {
         private Coordinate end;
         private int earliestStart;
         private int latestFinish;
+        private int id;
 
         private RideBuilder() {
         }
@@ -60,8 +64,14 @@ public class Ride {
             return this;
         }
 
+        public RideBuilder withId(int id) {
+            this.id = id;
+            return this;
+        }
+
         public Ride build() {
             Ride ride = new Ride();
+            ride.id = this.id;
             ride.earliestStart = this.earliestStart;
             ride.end = this.end;
             ride.start = this.start;
@@ -71,12 +81,26 @@ public class Ride {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ride ride = (Ride) o;
+        return id == ride.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Ride{");
         sb.append("start=").append(start);
         sb.append(", end=").append(end);
         sb.append(", earliestStart=").append(earliestStart);
         sb.append(", latestFinish=").append(latestFinish);
+        sb.append(", id=").append(id);
         sb.append('}');
         return sb.toString();
     }

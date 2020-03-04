@@ -1,14 +1,12 @@
 package be.jcrafters.kata.selfdriving;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 import static be.jcrafters.kata.selfdriving.Ride.RideBuilder.aRide;
-import static java.util.stream.Collectors.toList;
 
 public class Planning {
 
@@ -32,10 +30,10 @@ public class Planning {
         bonus = Integer.parseInt(headerVariables[4]);
         numberOfRides = Integer.parseInt(headerVariables[5]);
 
-        rides = strings.stream()
-                .skip(1)
-                .map(this::toRide)
-                .collect(toList());
+        rides = new ArrayList<>();
+        for (int i=1; i<strings.size(); i++) {
+            rides.add(toRide(strings.get(i), i-1));
+        }
     }
 
     private List<String> readInputFile(String name) {
@@ -47,7 +45,7 @@ public class Planning {
         }
     }
 
-    private Ride toRide(String s) {
+    private Ride toRide(String s, int index) {
         String[] rideLine = s.split(" ");
         int startX = Integer.parseInt(rideLine[0]);
         int startY = Integer.parseInt(rideLine[1]);
@@ -57,6 +55,7 @@ public class Planning {
         int latestFinish = Integer.parseInt(rideLine[5]);
 
         return aRide()
+                .withId(index)
                 .withStart(Coordinate.of(startX, startY))
                 .withEnd(Coordinate.of(endX, endY))
                 .withEarliestStart(earliestStart)

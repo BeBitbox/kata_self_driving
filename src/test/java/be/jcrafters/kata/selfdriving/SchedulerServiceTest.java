@@ -2,10 +2,29 @@ package be.jcrafters.kata.selfdriving;
 
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 class SchedulerServiceTest {
 
     @Test
-    void calculateSubmission() {
-        Submission submission = new SchedulerService().calculateSubmission(new Planning("minimal_city"));
+    void calculateSubmission_minimal() {
+        var planning = new Planning("minimal_city");
+
+        Submission submission = new SchedulerService().calculateSubmission(planning);
+
+        assertThat(submission.rideAssignments).hasSize(1);
+        assertThat(submission.rideAssignments.get(0)).hasSize(1);
+        assertThat(submission.rideAssignments.get(0)).containsExactly(new FulfilledRide(Ride.RideBuilder.aRide().withId(0).build(), true));
+    }
+
+    @Test
+    void calculateSubmission_notPunctual() {
+        var planning = new Planning("minimal_city_not_punctual");
+
+        Submission submission = new SchedulerService().calculateSubmission(planning);
+
+        assertThat(submission.rideAssignments).hasSize(1);
+        assertThat(submission.rideAssignments.get(0)).hasSize(1);
+        assertThat(submission.rideAssignments.get(0)).containsExactly(new FulfilledRide(Ride.RideBuilder.aRide().withId(0).build(), false));
     }
 }
